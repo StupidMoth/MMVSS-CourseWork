@@ -16,5 +16,5 @@ def printArr(A):
         print('{0:6.0f}'.format(i+1), end = ' ')
     print()
     for i in range(len(A)):
-        print('{0:6.2f}'.format(A[i]), end = ' ')
-    print()
+        print('{0:6.2f}'.format(A[i]) if A[i] != None else 'None', end = ' ')
+    print('\n')

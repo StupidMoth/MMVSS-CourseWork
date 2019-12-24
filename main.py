@@ -51,6 +51,7 @@ def main():
     # Коэффициенты распределения трафика по направлениям связи:
     k = Calculate.calcTrafficRatio(y, n)
     print("2. Коэффициенты распределения трафика по направлениям связи были вычислены.")
+    UT.printMatrix(k, n)
     
     # Матрица интенсивностей трафика в направлениях связи:
     Y = Calculate.calcTrafficMatrixIntensity(k, y, n)
@@ -64,24 +65,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
