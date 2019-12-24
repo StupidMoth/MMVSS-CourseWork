@@ -1,8 +1,8 @@
 # Интенсивность исходящего трафика от каждого из узлов сети:
 # y[i]=N[i]*y[0], i = 1..n
 def calcTrafficNodeIntensity(N, y0, n):
-    y = [y0]
-    for i in range(1, n):
+    y = []
+    for i in range(n):
         y.append(round(N[i] * y0))
     return y
 

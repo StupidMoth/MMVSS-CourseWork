@@ -1,5 +1,5 @@
 def printMatrix(M, n):
-    print('  ', end = '')
+    print('\n  ', end = '')
     for i in range(n):
         print('{0:4.0f} '.format(i+1), end = ' ')
     print()
