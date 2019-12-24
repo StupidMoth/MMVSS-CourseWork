@@ -1,6 +1,6 @@
 # Интенсивность исходящего трафика от каждого из узлов сети:
 # y[i]=N[i]*y[0], i = 1..n
-def calcNodeIntensity(N, y0, n):
+def calcTrafficNodeIntensity(N, y0, n):
     y = [y0]
     for i in range(1, n):
         y.append(round(N[i] * y0))
@@ -17,3 +17,16 @@ def calcTrafficRatio(y, n):
             row.append(value)
         k.append(row)
     return k
+
+# Матрица интенсивностей трафика в направлениях связи
+# Y = |y[i][j]|, i = 1..n, j = 1..n
+# y[i][j] = k[i][j] * y[i], i = 1..n, j = 1..n
+def calcTrafficMatrixIntensity(k, y, n):
+    Y = []
+    for i in range(n):
+        row = []
+        for j in range(n):
+            value = abs(k[i][j]*y[i])
+            row.append(value)
+        Y.append(row)
+    return Y
