@@ -31,7 +31,7 @@ def calcTrafficMatrixIntensity(k, y, n):
         Y.append(row)
     return Y
 
-#Матрица кратчайших маршрутов между вершинами графа
+# Матрица кратчайших маршрутов между вершинами графа
 # Алгоритм Флойда
 # Принимает матрицу смежности как аргумент
 # Элемент матрицы смежности может быть None
@@ -44,7 +44,7 @@ def calcByFloydsAlgorithm(R, n):
 
 sumNone = lambda a, b: a + b if (a != None and b != None) else None
 
-None2Number = lambda a: a if (a != None) else -1
+None2Number = lambda a: a if (a != None) else float('inf')
 
 def minNone(a, b):
     a = None2Number(a)

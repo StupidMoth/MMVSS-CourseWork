@@ -1,6 +1,11 @@
-import calc as Calculate
-
-y = Calculate.calcNodeIntensity([5, 10, 15], 0.1, 3)
-print("y посчитанно: ")
-for i in range(0, 3):
-    print(y[i])
+def printMatrix(M, n):
+    print('  ', end = '')
+    for i in range(n):
+        print('{0:4.0f} '.format(i+1), end = ' ')
+    print()
+    for i in range(n):
+        print('{0:2.0f} '.format(i+1), end = '')
+        for j in range(n):
+            print('{0:5.2f}'.format(M[i][j]), end = ' ')
+        print()
+    print()
