@@ -97,16 +97,17 @@ def main():
     # Матрица потоков:
     print("6. Матрица потоков была вычислена:")    
     V = C.calcStreamMatrix(Ytilda, q, n)
-    OUT.printMatrix(V, n)
+    #OUT.printMatrix(V, n)
 
+    # Интенсивность трафика ПД в линиях связи:
     print("7. Интенсивность трафика ПД в линиях связи была вычислена:")
     A = C.calcTrafficLineIntensity(V, Codec, n)
-    OUT.printMatrix(A, n)
+    #OUT.printMatrix(A, n)
 
-    # 8. Пропускнаяспособность линий связи
+    # Пропускна яспособность линий связи
     print("8. Пропускная способность линий связи была вычислена:")
     B = C.calcLinesCapacity(A, L, T0, n)
-    OUT.printMatrix(B, n)
+    #OUT.printMatrix(B, n)
     
 if __name__ == "__main__":
     main()

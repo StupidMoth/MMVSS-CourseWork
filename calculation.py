@@ -114,6 +114,6 @@ def calcLinesCapacity(A, L, T0, n):
     for i in range(n):
         row = []
         for j in range(n):
-            row.append(A[i][j]+(L/T0))
+            row.append(A[i][j]+(L*8/T0))
         B.append(row)
     return B    
