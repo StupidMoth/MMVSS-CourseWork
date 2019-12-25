@@ -3,6 +3,15 @@ import tests as UT
 
 def main():
     # --- Входные данные:
+    L = 200
+
+    T0 = 0.1
+    # Codec
+    Codec = 'G.711'
+    
+    # Качество
+    q = 98
+    
     # Количество узлов связи
     n = 20
     
@@ -62,6 +71,29 @@ def main():
     R = Calculate.calcByFloydsAlgorithm(D, n)
     print("4. Матрица кратчайших маршрутов между вершинами графа была вычислена:")
     UT.printMatrix(D, n)
+
+    # Матрица интенсивностей нагрузок на линии связи:
+    Ytilda = Calculate.calcIntensity(Y, R, n)
+    print("5. Матрица интенсивностей нагрузок на линии связи была вычислена:")
+
+    Ytilda = k # ВРЕМЕННАЯ ЗАГЛУШКА, ПОКА НЕ БУДЕТ ДАНА Y~
+    
+    UT.printMatrix(Ytilda, n)
+
+    # Матрица потоков:
+    print("6. Матрица потоков была вычислена:")    
+    V = Calculate.calcStreamMatrix(Ytilda, q, n)
+    UT.printMatrix(V, n)
+
+    print("7. Интенсивность трафика ПД в линиях связи была вычислена:")
+    A = Calculate.calcTrafficLineIntensity(V, Codec, n)
+    UT.printMatrix(A, n)
+
+    # 8. Пропускнаяспособность линий связи
+    B = Calculate.calcLinesCapacity(A, L, T0, n)
+    UT.printMatrix(B, n)
+    
+
     
 if __name__ == "__main__":
     main()
