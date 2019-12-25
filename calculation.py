@@ -69,6 +69,7 @@ def calcIntensity(Y, R, n):
     return Ytilda            
 
 # 6. Матрица потоков
+# j = 1..n, i = 1..n
 def calcStreamMatrix(Ytilda, q, n):
     V = Ytilda
     p0 = 1 - q / 100
@@ -88,12 +89,13 @@ def fErlang(yt, v, n):
     p = 1
     for i in range(n):
         if yt != 0:
-            p = 1 + p * i / yt
+            p = 1 + p * i / yt    # Деление на 0
         else:
             p = 1 + p * i / 0.001 # КАК ОБРАБАТЫВАТЬ???
     return 1 / p
 
 # 7. Интенсивность трафика ПД в линиях связи
+# j = 1..n, i = 1..n
 def calcTrafficLineIntensity(V, Codec, n):
     if Codec == 'G.711':
         a0 = 85600 # бит/с
@@ -105,7 +107,8 @@ def calcTrafficLineIntensity(V, Codec, n):
         A.append(row)
     return A    
     
-# 8.
+# 8. Пропускнаяспособность линий связи
+# j = 1..n, i = 1..n
 def calcLinesCapacity(A, L, T0, n):
     B = []
     for i in range(n):
@@ -114,5 +117,3 @@ def calcLinesCapacity(A, L, T0, n):
             row.append(A[i][j]+(L/T0))
         B.append(row)
     return B    
-
-

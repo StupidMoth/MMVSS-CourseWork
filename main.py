@@ -1,33 +1,18 @@
-import calc as Calculate
-import tests as UT
+import calculation as C
+import optimization as O
+import output as OUT
+
+'''
+    1. Как правильно считать Y~?
+    2. Деление на 0 при вычислении матрицы потоков?
+    3. Оптимизация не реализована.
+    4. Пояснительная записка не написана.
+'''
 
 def main():
+    
     # --- Входные данные:
-    L = 200
-
-    T0 = 0.1
-    # Codec
-    Codec = 'G.711'
     
-    # Качество
-    q = 98
-    
-    # Количество узлов связи
-    n = 20
-    
-    # Распределение абонентов по узлам связи (количество)
-    N = [7916, 9084, 7295, 6958, 8765, 
-         4897, 9029, 9484, 7254, 2479, 
-         3384, 4371, 9992, 7318, 5953,
-         1647, 5455, 7300, 4146, 5903]
-    
-    # Интенсивность исходящего трафика от каждого из узлов сети (yi)
-    y = []
-
-    # y0 = 0.1 Эрл
-    # Как оказалось это не то же самое, что и y[0]
-    y0 = 0.1
-
     # Матрица смежностей
     # None - нет пути
     D = [[0, 24.33963418, None, None, 57.96404481, 63.28330636, 92.04159379, 97.41273522, 34.13305879, 8.501392603, None, None, 43.92023683, 13.11889291, None, 94.92898583, 40.45057893, 30.26080728, 84.720999, None],
@@ -51,49 +36,77 @@ def main():
          [84.720999, None, 96.94798589, None, None, None, None, None, 48.50550294, 95.32405734, 38.88342977, None, 54.12440896, 43.64811778, None, 31.03093505, None, 51.32429004, 0, None],
          [None, None, 68.55219007, 48.74228835, None, 33.2095325, 42.74333119, 81.40396476, None, None, 79.96090055, None, 19.87610459, None, 96.07403874, 38.13814521, None, None, None, 0]]
 
+    # Количество узлов связи
+    n = 20
+    
+    # Длина пакета
+    L = 200 # байт
+
+    # Codec
+    Codec = 'G.711'
+
+    # Интенсивность  удельной  абонентской нагрузки
+    y0 = 0.1 # Эрл
+
+
+    # --- Требования к качеству обслуживания:
+    
+    # Начальное требование к величине задержки T0
+    T0 = 0.1 # 100ms = 0.1s
+    
+    # Доля вызовов, обслуженных с гарантированным качеством 
+    q = 98 # 98%
+    
+    # Распределение абонентов по узлам связи (количество)
+    N = [7916, 9084, 7295, 6958, 8765, 
+         4897, 9029, 9484, 7254, 2479, 
+         3384, 4371, 9992, 7318, 5953,
+         1647, 5455, 7300, 4146, 5903]
+
+
     # --- Рассчеты:
+    
     # Интенсивность исходящего трафика от каждого из узлов сети:
-    y = Calculate.calcTrafficNodeIntensity(N, y0, n)
+    y = C.calcTrafficNodeIntensity(N, y0, n)
     print("1. Интенсивность исходящего трафика от каждого из узлов сети была вычислена.")
-    UT.printArr(y)
+    OUT.printArr(y)
     
     # Коэффициенты распределения трафика по направлениям связи:
-    k = Calculate.calcTrafficRatio(y, n)
+    k = C.calcTrafficRatio(y, n)
     print("2. Коэффициенты распределения трафика по направлениям связи были вычислены.")
-    UT.printMatrix(k, n)
+    OUT.printMatrix(k, n)
     
     # Матрица интенсивностей трафика в направлениях связи:
-    Y = Calculate.calcTrafficMatrixIntensity(k, y, n)
+    Y = C.calcTrafficMatrixIntensity(k, y, n)
     print("3. Матрица интенсивностей трафика в направлениях связи была вычислена:")
-    UT.printMatrix(Y, n)
+    OUT.printMatrix(Y, n)
     
     # Матрица кратчайших маршрутов между вершинами графа:
-    R = Calculate.calcByFloydsAlgorithm(D, n)
+    R = C.calcByFloydsAlgorithm(D, n)
     print("4. Матрица кратчайших маршрутов между вершинами графа была вычислена:")
-    UT.printMatrix(D, n)
+    OUT.printMatrix(D, n)
 
     # Матрица интенсивностей нагрузок на линии связи:
-    Ytilda = Calculate.calcIntensity(Y, R, n)
+    Ytilda = C.calcIntensity(Y, R, n)
     print("5. Матрица интенсивностей нагрузок на линии связи была вычислена:")
 
     Ytilda = k # ВРЕМЕННАЯ ЗАГЛУШКА, ПОКА НЕ БУДЕТ ДАНА Y~
     
-    UT.printMatrix(Ytilda, n)
+    OUT.printMatrix(Ytilda, n)
 
     # Матрица потоков:
     print("6. Матрица потоков была вычислена:")    
-    V = Calculate.calcStreamMatrix(Ytilda, q, n)
-    UT.printMatrix(V, n)
+    V = C.calcStreamMatrix(Ytilda, q, n)
+    OUT.printMatrix(V, n)
 
     print("7. Интенсивность трафика ПД в линиях связи была вычислена:")
-    A = Calculate.calcTrafficLineIntensity(V, Codec, n)
-    UT.printMatrix(A, n)
+    A = C.calcTrafficLineIntensity(V, Codec, n)
+    OUT.printMatrix(A, n)
 
     # 8. Пропускнаяспособность линий связи
-    B = Calculate.calcLinesCapacity(A, L, T0, n)
-    UT.printMatrix(B, n)
-    
-
+    print("8. Пропускная способность линий связи была вычислена:")
+    B = C.calcLinesCapacity(A, L, T0, n)
+    OUT.printMatrix(B, n)
     
 if __name__ == "__main__":
     main()
