@@ -53,6 +53,27 @@ def minNone(a, b):
     b = None2Number(b)
     return min(a, b)    
 
+# 4.5. Матрица восстановленных путей
+# По Y и D
+
+def calcPath(ar1, ar2, n):
+    ar3 = [[0] * 20 for i in range(20)]
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                print(str(ar1[i][k]) + " != " + str(float(j+1)))
+                if ar1[i][k] == float(j + 1):
+                    ar3[i][j] += ar2[i][k]
+                print(str(ar1[j][k]) + " != " + str(float(i + 1)))
+                if ar1[j][k] == float(i + 1):
+                    ar3[i][j] += ar2[j][k]
+    return ar3
+
+def calcDeykstra(Y, D, k, l, n):
+    for j in range(n):
+        if Y[k][j] == (l + 1):
+            _next[k][l] += D[k][j]
+
 # 5. Матрица интенсивностей нагрузок на линии связи
 # Правильно ли я считаю?!!
 # j = 1..n, i = 1..n
