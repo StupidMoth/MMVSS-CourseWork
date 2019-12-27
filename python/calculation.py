@@ -54,25 +54,26 @@ def minNone(a, b):
     return min(a, b)    
 
 # 4.5. Матрица восстановленных путей
-# По Y и D
+# По S и D
 
-def calcPath(ar1, ar2, n):
-    ar3 = [[0] * 20 for i in range(20)]
+ar3 = [[0] * 20 for i in range(20)]
+ar2 = [[0] * 20 for i in range(20)]
+ar1 = [[0] * 20 for i in range(20)]
+
+def calcPath(_ar1, _ar2, n):
+    ar1 = _ar1
+    ar2 = _ar2
     for i in range(n):
         for j in range(n):
-            for k in range(n):
-                print(str(ar1[i][k]) + " != " + str(float(j+1)))
-                if ar1[i][k] == float(j + 1):
-                    ar3[i][j] += ar2[i][k]
-                print(str(ar1[j][k]) + " != " + str(float(i + 1)))
-                if ar1[j][k] == float(i + 1):
-                    ar3[i][j] += ar2[j][k]
-    return ar3
+            calcDeykstra(i, j)
+    return ar1
 
-def calcDeykstra(Y, D, k, l, n):
-    for j in range(n):
-        if Y[k][j] == (l + 1):
-            _next[k][l] += D[k][j]
+def calcDeykstra(k, l):
+    for j in range(20):
+        if ar1[k][j] == ((l+1)):
+            ar3[k][l] += ar2[k][j]
+        if ar1[l][j] == ((k+1)):
+            ar3[k][l] += ar2[k][j]
 
 # 5. Матрица интенсивностей нагрузок на линии связи
 # Правильно ли я считаю?!!
@@ -92,13 +93,15 @@ def calcIntensity(Y, R, n):
 # 6. Матрица потоков
 # j = 1..n, i = 1..n
 def calcStreamMatrix(Ytilda, q, n):
-    V = Ytilda
+    V = [[0] * 20 for i in range(20)]
+
     p0 = 1 - q / 100
     v = 0
     p = 1
     for i in range(n):
         for j in range(n):
             while p0 <= p:
+                #print(str(p0) + " <= " + str(p))
                 v += 1
                 p = fErlang(Ytilda[i][j], v, n)
             V[i][j] = v - 1
@@ -108,11 +111,11 @@ def calcStreamMatrix(Ytilda, q, n):
 
 def fErlang(yt, v, n):
     p = 1
-    for i in range(n):
+    for i in range(v):
         if yt != 0:
             p = 1 + p * i / yt    # Деление на 0
         else:
-            p = 1 + p * i / 0.001 # КАК ОБРАБАТЫВАТЬ???
+            return 0
     return 1 / p
 
 # 7. Интенсивность трафика ПД в линиях связи
@@ -135,6 +138,9 @@ def calcLinesCapacity(A, L, T0, n):
     for i in range(n):
         row = []
         for j in range(n):
-            row.append(A[i][j]+(L*8/T0))
+            if (A[i][j] != 0):
+                row.append(A[i][j]+(L*8/T0))
+            else:
+                row.append(A[i][j])
         B.append(row)
     return B    
